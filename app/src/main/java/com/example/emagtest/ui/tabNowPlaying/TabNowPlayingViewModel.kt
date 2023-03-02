@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.Flow
 
 class TabNowPlayingViewModel : ViewModel() {
     val isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    val hasError: MutableLiveData<Boolean> = MutableLiveData()
     fun getData(): Flow<PagingData<MoviesModel>> {
         return NowPlayingRepository.getData()
     }
+
+
 }

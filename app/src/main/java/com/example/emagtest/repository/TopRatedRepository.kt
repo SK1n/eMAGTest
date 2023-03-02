@@ -5,18 +5,19 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.emagtest.api.RetrofitInstance
 import com.example.emagtest.data.NowPlayingPagingSource
+import com.example.emagtest.data.TopRatedPagingSource
 import com.example.emagtest.models.MoviesModel
 import com.example.emagtest.utils.Constants
 import kotlinx.coroutines.flow.Flow
 
-object NowPlayingRepository {
+object TopRatedRepository {
     fun getData(): Flow<PagingData<MoviesModel>> {
         return Pager(
             config = PagingConfig(
                 pageSize = Constants.QUERY_PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { NowPlayingPagingSource(RetrofitInstance.api) }
+            pagingSourceFactory = { TopRatedPagingSource(RetrofitInstance.api) }
         ).flow
     }
 }

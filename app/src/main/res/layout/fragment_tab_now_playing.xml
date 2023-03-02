@@ -18,7 +18,7 @@
         >
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/nowPlayingRecycler"
+            android:id="@+id/movie_recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clipToPadding="false"
@@ -29,10 +29,21 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="2"
+            android:visibility="@{viewModel.hasError ? View.GONE : View.VISIBLE}"
             tools:listitem="@layout/item_movie" />
 
+        <Button
+            android:id="@+id/retry"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="Error"
+            android:visibility="@{viewModel.hasError ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ProgressBar
-            android:id="@+id/nowPlayingProgress"
+            android:id="@+id/movie_progress_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"

@@ -1,4 +1,4 @@
-package com.example.emagtest.data.nowPlaying
+package com.example.emagtest.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -9,13 +9,13 @@ import com.example.emagtest.utils.Constants.QUERY_PAGE_SIZE
 import retrofit2.HttpException
 import java.io.IOException
 
-class PopularPagingSource(
+class UpcomingPagingSource(
     private val service: ApiService
 ) : PagingSource<Int, MoviesModel>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MoviesModel> {
         val position = params.key ?: FIRST_PAGE
         return try {
-            val response = service.getPopularMovies(page = position)
+            val response = service.getUpcomingMovies(page = position)
             val movies = response.body()?.results
             val nextKey = if (movies!!.isEmpty()) {
                 null
