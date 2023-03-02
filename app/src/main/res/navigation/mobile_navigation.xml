@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_tab_now_playing" >
+    <fragment
+        android:id="@+id/navigation_tab_now_playing"
+        android:name="com.example.emagtest.ui.tabNowPlaying.TabNowPlaying"
+         />
+    <fragment
+        android:id="@+id/navigation_tab_popular"
+        android:name="com.example.emagtest.ui.tabPopular.TabPopular"
+        android:label="TabPopular" />
+    <fragment
+        android:id="@+id/navigation_tab_top_rated"
+        android:name="com.example.emagtest.ui.tabTopRated.TabTopRated"
+        android:label="TabTopRated" />
+    <fragment
+        android:id="@+id/navigation_tab_upcoming"
+        android:name="com.example.emagtest.ui.tabUpcoming.TabUpcoming"
+        android:label="TabUpcoming" />
+</navigation>
