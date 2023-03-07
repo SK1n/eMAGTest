@@ -6,7 +6,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.room.Room
 import com.example.emagtest.databinding.ActivityMainBinding
+import com.example.emagtest.room.AppDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +33,10 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val db = Room.databaseBuilder(
+            applicationContext, AppDatabase::class.java, "movies-list.db"
+        ).build()
 
     }
 

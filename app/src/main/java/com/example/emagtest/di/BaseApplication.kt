@@ -1,7 +1,7 @@
-package com.example.emagtest
+package com.example.emagtest.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class MovieAppApplication : Application()
+class BaseApplication : Application()

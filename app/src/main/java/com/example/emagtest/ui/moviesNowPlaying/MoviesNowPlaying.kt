@@ -1,6 +1,7 @@
 package com.example.emagtest.ui.moviesNowPlaying
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -16,6 +17,7 @@ import com.example.emagtest.databinding.FragmentMoviesNowPlayingBinding
 import com.example.emagtest.ui.customViews.MarginDecoration
 import com.example.emagtest.ui.tabHome.TabHomeDirections
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
@@ -29,9 +31,7 @@ class MoviesNowPlaying : Fragment() {
     private lateinit var pagerAdapter: MoviesAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMoviesNowPlayingBinding.inflate(inflater, container, false)
         navController = findNavController()
@@ -54,11 +54,32 @@ class MoviesNowPlaying : Fragment() {
             val directions = TabHomeDirections.actionTabHomeToNavigationMovieDetails(it.id!!)
             findNavController().navigate(directions)
         }
+        pagerAdapter.favoritesButton = {
+            GlobalScope.launch {
+                if (viewModel.getMovies().contains(it)) {
+                    viewModel.removeFromDb(it)
+
+                    Log.d("movieDbClickListener", "removed movie from db: $it")
+                    Log.d("movieDbClickListener", "number of items in db: ${viewModel.getDbSize()}")
+                } else {
+                    // database.moviesDao().insertMovie(movie!!)
+                    // bindFavorites(binding.itemFavorites, R.drawable.baseline_favorite_black_18)
+                    viewModel.addToDb(it)
+                    Log.d("movieDbClickListener", "added movie to db: $it")
+                    Log.d("movieDbClickListener", "number of items in db: ${viewModel.getDbSize()}")
+                }
+            }
+
+        }
         viewModel.movies.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 pagerAdapter.submitData(it)
             }
         }
+    }
+
+    fun favoritesButtonClickListener() {
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

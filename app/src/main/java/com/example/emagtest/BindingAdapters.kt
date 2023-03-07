@@ -1,5 +1,6 @@
 package com.example.emagtest
 
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
@@ -17,6 +18,11 @@ fun bindImageItem(cardView: CardView, url: String?) {
         .error(R.drawable.ic_error)
         .into(object : BitmapImageViewTarget(cardView.findViewById(R.id.item_poster)) {
         })
+}
+
+@BindingAdapter("Favorites")
+fun bindFavorites(imageView: ImageView, image: Int) {
+    Glide.with(imageView.context).load(image).into(imageView)
 }
 
 @BindingAdapter("imageUrl")

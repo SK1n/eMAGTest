@@ -59,6 +59,7 @@
                     app:drawableStartCompat="@drawable/baseline_star_black_18" />
 
                 <ImageView
+                    android:id="@+id/item_favorites"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
