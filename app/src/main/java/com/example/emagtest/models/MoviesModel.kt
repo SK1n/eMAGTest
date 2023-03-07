@@ -3,12 +3,6 @@ package com.example.emagtest.models
 
 import java.io.Serializable
 
-data class MoviesPage(
-    val page: Int,
-    val results: MutableList<MoviesModel>,
-    val total_pages: Int
-)
-
 data class MoviesModel(
     val title: String?,
     val id: Int?,

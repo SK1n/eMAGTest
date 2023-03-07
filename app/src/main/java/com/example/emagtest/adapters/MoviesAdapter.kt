@@ -20,8 +20,8 @@ class MoviesAdapter : PagingDataAdapter<MoviesModel, MoviesAdapter.MovieItemView
             binding.movieItem = movie
             binding.executePendingBindings()
         }
-
     }
+
 
     companion object {
         private val differCallback = object : DiffUtil.ItemCallback<MoviesModel>() {

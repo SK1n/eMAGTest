@@ -8,4 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="item_movie_text_color">#333333</color>
+    <color name="details_movie_title">#000000</color>
+    <color name="details_movie_tagline">#333333</color>
+    <color name="details_movie_release_year">#000000</color>
+    <color name="details_movie_tag_text">#333333</color>
+    <color name="details_movie_tag_background">#e4e7eb</color>
+    <color name="details_movie_overview">#000000</color>
+    <color name="details_movie_rating_count">#333333</color>
+    <color name="details_movie_rating">#000000</color>
+    <color name="tab_text_color">#ffffff</color>
+    <color name="app_bar_text">#ffffff</color>
+
 </resources>

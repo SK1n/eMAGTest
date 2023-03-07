@@ -3,21 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navigation_tab_now_playing" >
+    app:startDestination="@id/navigation_tab_home">
     <fragment
-        android:id="@+id/navigation_tab_now_playing"
-        android:name="com.example.emagtest.ui.tabNowPlaying.TabNowPlaying"
-         />
+        android:id="@+id/navigation_movie_details"
+        android:name="com.example.emagtest.ui.movieDetails.MovieDetails"
+        android:label="MovieDetails">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
     <fragment
-        android:id="@+id/navigation_tab_popular"
-        android:name="com.example.emagtest.ui.tabPopular.TabPopular"
-        android:label="TabPopular" />
+        android:id="@+id/navigation_tab_home"
+        android:name="com.example.emagtest.ui.tabHome.TabHome"
+        android:label="Home" >
+        <action
+            android:id="@+id/action_tabHome_to_navigation_movie_details"
+            app:destination="@id/navigation_movie_details" />
+    </fragment>
     <fragment
-        android:id="@+id/navigation_tab_top_rated"
-        android:name="com.example.emagtest.ui.tabTopRated.TabTopRated"
-        android:label="TabTopRated" />
+        android:id="@+id/navigation_tab_search_movies"
+        android:name="com.example.emagtest.ui.tabSearch.SearchMovies"
+        android:label="Search"
+        tools:layout="@layout/fragment_tab_search" >
+        <action
+            android:id="@+id/action_searchMovies_to_navigation_movie_details"
+            app:destination="@id/navigation_movie_details" />
+    </fragment>
     <fragment
-        android:id="@+id/navigation_tab_upcoming"
-        android:name="com.example.emagtest.ui.tabUpcoming.TabUpcoming"
-        android:label="TabUpcoming" />
+        android:id="@+id/navigation_tab_favorites"
+        android:name="com.example.emagtest.ui.tabFavorites.TabFavorites"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_tab_favorites" >
+        <action
+            android:id="@+id/action_tabFavorites_to_navigation_movie_details"
+            app:destination="@id/navigation_movie_details" />
+    </fragment>
 </navigation>

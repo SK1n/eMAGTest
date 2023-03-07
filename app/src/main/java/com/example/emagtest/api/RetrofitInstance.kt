@@ -1,22 +1,40 @@
 package com.example.emagtest.api
 
 import com.example.emagtest.BuildConfig
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
-class RetrofitInstance {
-    companion object {
-        private val retrofit by lazy {
-            val loggingInterceptor =
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            val client = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
-            Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create()).client(client).build()
-        }
-        val api by lazy {
-            retrofit.create(ApiService::class.java)
-        }
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
+
+    @Singleton
+    @Provides
+    fun provideHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder().build()
     }
+
+    @Singleton
+    @Provides
+    fun provideConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
+
+    @Singleton
+    @Provides
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory
+    ): Retrofit {
+        return Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL).client(okHttpClient)
+            .addConverterFactory(gsonConverterFactory).build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCurrencyService(retrofit: Retrofit): ApiService =
+        retrofit.create(ApiService::class.java)
 }

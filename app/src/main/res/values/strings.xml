@@ -8,9 +8,24 @@
     <string name="tab_upcoming">Upcoming</string>
     <string name="base_poster_path">https://image.tmdb.org/t/p/w500%s</string>
     <string name="year_format">%.4s</string>
+    <string name="release_in">Released in %.4s</string>
+    <string name="rating_format">%.3s / 10</string>
+    <string name="rating_count_format">( %s )</string>
     <string name="hint_rating">rating</string>
     <string name="hint_year">year</string>
     <string name="bold"><b>%s</b></string>
     <string name="item_poster_description">poster description</string>
     <string name="item_content_description">content description</string>
+    <string name="hint_release_date">1990/01/30</string>
+    <string name="tag_name">Tag name</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_favorites">Favorites</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="not_yet_implemented">Not yet implemented</string>
+    <string name="results_could_not_be_loaded">Results could not be loaded</string>
+    <string name="retryText">Retry</string>
+    <string name="no_results_found_for_this_query">No results found for this query</string>
+    <string name="title">Title</string>
 </resources>

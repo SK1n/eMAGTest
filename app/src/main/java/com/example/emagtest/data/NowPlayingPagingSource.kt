@@ -8,8 +8,9 @@ import com.example.emagtest.utils.Constants.FIRST_PAGE
 import com.example.emagtest.utils.Constants.QUERY_PAGE_SIZE
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class NowPlayingPagingSource(
+class NowPlayingPagingSource @Inject constructor(
     private val service: ApiService
 ) : PagingSource<Int, MoviesModel>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MoviesModel> {
@@ -27,12 +28,11 @@ class NowPlayingPagingSource(
                 prevKey = if (position == FIRST_PAGE) null else position,
                 nextKey = nextKey
             )
-        } catch (exception: IOException) {
-            return LoadResult.Error(exception)
-        } catch (exception: HttpException) {
-            return LoadResult.Error(exception)
+        } catch (e: IOException) {
+            LoadResult.Error(e)
+        } catch (e: HttpException) {
+            LoadResult.Error(e)
         }
-
     }
 
     override fun getRefreshKey(state: PagingState<Int, MoviesModel>): Int? {
