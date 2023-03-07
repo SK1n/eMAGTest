@@ -31,7 +31,7 @@ class SearchMovies : Fragment() {
     ): View? {
         _binding = FragmentTabSearchBinding.inflate(inflater, container, false)
         navController = findNavController()
-        pagerAdapter = MoviesAdapter()
+        pagerAdapter = MoviesAdapter(requireContext())
         return binding.root
     }
 

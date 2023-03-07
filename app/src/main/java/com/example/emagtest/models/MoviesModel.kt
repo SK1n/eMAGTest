@@ -18,4 +18,5 @@ data class MoviesModel(
     @ColumnInfo(name = "overview") val overview: String?,
     @ColumnInfo(name = "release_date") val release_date: String?,
     @ColumnInfo(name = "backdrop_path") val backdrop_path: String?,
+    val isFavorite : Boolean = false,
 ) : Serializable

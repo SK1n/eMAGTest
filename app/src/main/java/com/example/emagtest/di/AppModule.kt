@@ -23,4 +23,5 @@ object AppModule {
     @Singleton
     @Provides
     fun moviesDao(db: AppDatabase) = db.moviesDao()
+
 }

@@ -33,7 +33,7 @@ class MoviesUpcoming : Fragment() {
     ): View {
         _binding = FragmentMoviesUpcomingBinding.inflate(inflater, container, false)
         navController = findNavController()
-        pagerAdapter = MoviesAdapter()
+        pagerAdapter = MoviesAdapter(requireContext())
         return binding.root
     }
 

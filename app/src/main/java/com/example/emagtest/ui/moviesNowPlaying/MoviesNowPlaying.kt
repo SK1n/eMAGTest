@@ -35,7 +35,7 @@ class MoviesNowPlaying : Fragment() {
     ): View {
         _binding = FragmentMoviesNowPlayingBinding.inflate(inflater, container, false)
         navController = findNavController()
-        pagerAdapter = MoviesAdapter()
+        pagerAdapter = MoviesAdapter(requireContext())
 
         return binding.root
     }
@@ -54,17 +54,23 @@ class MoviesNowPlaying : Fragment() {
             val directions = TabHomeDirections.actionTabHomeToNavigationMovieDetails(it.id!!)
             findNavController().navigate(directions)
         }
-        pagerAdapter.favoritesButton = {
-            GlobalScope.launch {
+        pagerAdapter.favoritesClickListener = {
+            lifecycleScope.launch {
                 if (viewModel.getMovies().contains(it)) {
                     viewModel.removeFromDb(it)
-
                     Log.d("movieDbClickListener", "removed movie from db: $it")
                     Log.d("movieDbClickListener", "number of items in db: ${viewModel.getDbSize()}")
+                 //
+
+                    pagerAdapter.notifyDataSetChanged()
+
                 } else {
                     // database.moviesDao().insertMovie(movie!!)
                     // bindFavorites(binding.itemFavorites, R.drawable.baseline_favorite_black_18)
+
+                 //   pagerAdapter.isFavorite(true)
                     viewModel.addToDb(it)
+                    pagerAdapter.notifyDataSetChanged()
                     Log.d("movieDbClickListener", "added movie to db: $it")
                     Log.d("movieDbClickListener", "number of items in db: ${viewModel.getDbSize()}")
                 }

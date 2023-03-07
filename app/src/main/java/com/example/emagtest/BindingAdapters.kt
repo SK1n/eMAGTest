@@ -1,5 +1,6 @@
 package com.example.emagtest
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
@@ -22,7 +23,11 @@ fun bindImageItem(cardView: CardView, url: String?) {
 
 @BindingAdapter("Favorites")
 fun bindFavorites(imageView: ImageView, image: Int) {
-    Glide.with(imageView.context).load(image).into(imageView)
+    Glide.with(imageView.context).asBitmap().load(image).into(object : BitmapImageViewTarget(imageView) {
+        override fun setResource(resource: Bitmap?) {
+            super.setResource(resource)
+        }
+    })
 }
 
 @BindingAdapter("imageUrl")

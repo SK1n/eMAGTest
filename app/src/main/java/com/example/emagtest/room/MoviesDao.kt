@@ -25,4 +25,7 @@ interface MoviesDao {
 
     @Query("SELECT count(id) FROM movieEntity")
     suspend fun numberOfItemsInDB() : Int
+
+    @Query("SELECT EXISTS(SELECT * FROM movieEntity WHERE id = :id)")
+    suspend fun elementExists(id: Int) : Boolean
 }

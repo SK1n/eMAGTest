@@ -11,4 +11,5 @@ class LocalRepository @Inject constructor(
     suspend fun delete(movie: MoviesModel) = moviesDao.deleteMovie(movie)
     suspend fun getMovies() = moviesDao.getMovies()
     suspend fun numberOfItemsInDB() = moviesDao.numberOfItemsInDB()
+    suspend fun elementExists(id: Int) = moviesDao.elementExists(id)
 }

@@ -33,7 +33,7 @@ class MoviesPopular : Fragment() {
     ): View {
         _binding = FragmentMoviesPopularBinding.inflate(inflater, container, false)
         navController = findNavController()
-        pagerAdapter = MoviesAdapter()
+        pagerAdapter = MoviesAdapter(requireContext())
 
         return binding.root
     }

@@ -33,7 +33,7 @@ class MoviesTopRated : Fragment() {
     ): View {
         _binding = FragmentMoviesTopRatedBinding.inflate(inflater, container, false)
         navController = findNavController()
-        pagerAdapter = MoviesAdapter()
+        pagerAdapter = MoviesAdapter(requireContext())
         return binding.root
     }
 
