@@ -4,11 +4,11 @@ package com.example.emagtest.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.emagtest.R
-import com.example.emagtest.bindFavorites
 import com.example.emagtest.databinding.ItemMovieBinding
 import com.example.emagtest.di.LocalRepositoryEntryPoint
 import com.example.emagtest.models.MoviesModel
@@ -16,20 +16,20 @@ import com.example.emagtest.room.LocalRepository
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
-class MoviesAdapter (context: Context)  :
+class MoviesAdapter(context: Context) :
     PagingDataAdapter<MoviesModel, MoviesAdapter.MovieItemViewHolder>(
         differCallback
     ) {
     var onItemClick: ((MoviesModel) -> Unit)? = null
     var favoritesClickListener: ((MoviesModel) -> Unit)? = null
 
-    var localRepository : LocalRepository
+    var localRepository: LocalRepository
 
     init {
-        val entryPoint = EntryPointAccessors.fromApplication(context, LocalRepositoryEntryPoint::class.java)
+        val entryPoint =
+            EntryPointAccessors.fromApplication(context, LocalRepositoryEntryPoint::class.java)
         localRepository = entryPoint.getLocalRepository()
     }
 
@@ -37,21 +37,14 @@ class MoviesAdapter (context: Context)  :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MoviesModel?) {
             binding.movieItem = movie
-            binding.itemFavorites.setOnClickListener { favoritesClickListener?.invoke(movie!!)
-            }
             GlobalScope.launch {
-                if(localRepository.elementExists(movie!!.id!!)) {
-                binding.itemFavorites.setImageResource(R.drawable.baseline_favorite_black_18)
-                //bindFavorites(binding.itemFavorites, R.drawable.baseline_favorite_black_18)
+                if (localRepository.elementExists(movie!!.id!!)) {
+                    binding.itemFavorites.setImageResource(R.drawable.baseline_favorite_black_18)
                 } else {
-                binding.itemFavorites.setImageResource(R.drawable.baseline_favorite_border_black_18)
-                // bindFavorites(binding.itemFavorites, R.drawable.baseline_favorite_border_black_18)
+                    binding.itemFavorites.setImageResource(R.drawable.baseline_favorite_border_black_18)
                 }
-
             }
-
             binding.executePendingBindings()
-
         }
     }
 
@@ -77,8 +70,20 @@ class MoviesAdapter (context: Context)  :
 
     override fun onBindViewHolder(holder: MovieItemViewHolder, position: Int) {
         holder.bind(getItem(position))
-
         holder.itemView.setOnClickListener { onItemClick?.invoke(getItem(position)!!) }
+        holder.itemView.findViewById<ImageView>(R.id.item_favorites).setOnClickListener {
+            setFavoriteClickListener(position)
+        }
+    }
 
+    private fun setFavoriteClickListener(position: Int) = GlobalScope.launch {
+        val movie = getItem(position)
+        if (localRepository.getMovies().contains(movie)) {
+            localRepository.delete(movie!!)
+            notifyItemChanged(position)
+        } else {
+            localRepository.insert(movie!!)
+            notifyItemChanged(position)
+        }
     }
 }

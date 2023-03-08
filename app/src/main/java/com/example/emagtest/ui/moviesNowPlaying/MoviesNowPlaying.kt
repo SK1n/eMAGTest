@@ -11,18 +11,24 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.example.emagtest.adapters.MoviesAdapter
 import com.example.emagtest.adapters.MoviesLoadStateAdapter
 import com.example.emagtest.databinding.FragmentMoviesNowPlayingBinding
+import com.example.emagtest.di.LocalRepositoryEntryPoint
+import com.example.emagtest.room.LocalRepository
 import com.example.emagtest.ui.customViews.MarginDecoration
 import com.example.emagtest.ui.tabHome.TabHomeDirections
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MoviesNowPlaying : Fragment() {
+class MoviesNowPlaying: Fragment() {
 
     private val viewModel: MoviesNowPlayingViewModel by viewModels()
     private var _binding: FragmentMoviesNowPlayingBinding? = null
@@ -36,46 +42,23 @@ class MoviesNowPlaying : Fragment() {
         _binding = FragmentMoviesNowPlayingBinding.inflate(inflater, container, false)
         navController = findNavController()
         pagerAdapter = MoviesAdapter(requireContext())
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupAdapter()
+    }
+
+    private fun setupAdapter() {
         binding.movieRecycler.apply {
             setHasFixedSize(true)
             addItemDecoration(MarginDecoration(context))
-            adapter = pagerAdapter.withLoadStateHeaderAndFooter(
-                header = MoviesLoadStateAdapter { pagerAdapter.retry() },
-                footer = MoviesLoadStateAdapter { pagerAdapter.retry() },
-            )
+            adapter = pagerAdapter
         }
         pagerAdapter.onItemClick = {
             val directions = TabHomeDirections.actionTabHomeToNavigationMovieDetails(it.id!!)
             findNavController().navigate(directions)
-        }
-        pagerAdapter.favoritesClickListener = {
-            lifecycleScope.launch {
-                if (viewModel.getMovies().contains(it)) {
-                    viewModel.removeFromDb(it)
-                    Log.d("movieDbClickListener", "removed movie from db: $it")
-                    Log.d("movieDbClickListener", "number of items in db: ${viewModel.getDbSize()}")
-                 //
-
-                    pagerAdapter.notifyDataSetChanged()
-
-                } else {
-                    // database.moviesDao().insertMovie(movie!!)
-                    // bindFavorites(binding.itemFavorites, R.drawable.baseline_favorite_black_18)
-
-                 //   pagerAdapter.isFavorite(true)
-                    viewModel.addToDb(it)
-                    pagerAdapter.notifyDataSetChanged()
-                    Log.d("movieDbClickListener", "added movie to db: $it")
-                    Log.d("movieDbClickListener", "number of items in db: ${viewModel.getDbSize()}")
-                }
-            }
-
         }
         viewModel.movies.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
@@ -83,22 +66,6 @@ class MoviesNowPlaying : Fragment() {
             }
         }
     }
-
-    fun favoritesButtonClickListener() {
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                navController.navigateUp()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

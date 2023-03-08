@@ -25,6 +25,10 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
             tools:listitem="@layout/item_movie" />
+
+        <include
+            android:id="@+id/item_no_data"
+            layout="@layout/item_no_data" />
     </RelativeLayout>
 
 

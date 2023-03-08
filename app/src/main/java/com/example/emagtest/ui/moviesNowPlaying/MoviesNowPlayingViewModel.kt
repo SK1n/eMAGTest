@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesNowPlayingViewModel @Inject constructor(
-    private val repository: NowPlayingRepository, private val localRepository: LocalRepository
+    private val repository: NowPlayingRepository
 ) : ViewModel() {
     val movies: MutableLiveData<PagingData<MoviesModel>> = MutableLiveData()
 
@@ -27,15 +27,4 @@ class MoviesNowPlayingViewModel @Inject constructor(
             }
         }
     }
-
-    suspend fun getMovies(): List<MoviesModel> {
-        return localRepository.getMovies()
-    }
-
-    suspend fun addToDb(movie: MoviesModel) = localRepository.insert(movie)
-
-    suspend fun getDbSize() = localRepository.numberOfItemsInDB()
-
-
-    suspend fun removeFromDb(movie: MoviesModel) = localRepository.delete(movie)
 }

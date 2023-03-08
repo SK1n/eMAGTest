@@ -49,6 +49,11 @@ class TabFavorites : Fragment() {
             lifecycleScope.launch {
                 pagerAdapter.submitData(PagingData.from(it))
             }
+            if(it.isEmpty()) {
+                binding.itemNoData.root.visibility = View.VISIBLE
+            } else {
+                binding.itemNoData.root.visibility = View.GONE
+            }
         }
         binding.movieRecycler.apply {
             setHasFixedSize(true)
@@ -58,20 +63,7 @@ class TabFavorites : Fragment() {
                 val directions = TabFavoritesDirections.actionTabFavoritesToNavigationMovieDetails(it.id!!)
                 findNavController().navigate(directions)
             }
-            pagerAdapter.favoritesClickListener = {movie ->
-                    viewModel.movies.observe(viewLifecycleOwner) {
-                        lifecycleScope.launch {
-                            if (it.contains(movie)) {
-                                viewModel.removeFromDb(movie)
-                                Log.d("movieDbClickListener", "removed movie from db: $it")
-                                Log.d("movieDbClickListener", "number of items in db: ${viewModel.getDbSize()}")
-                                viewModel.getMovies()
-                                pagerAdapter.notifyDataSetChanged()
 
-                            }
-                        }
-                    }
-            }
         }
     }
     override fun onDestroyView() {
