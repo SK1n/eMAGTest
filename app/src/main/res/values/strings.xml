@@ -10,6 +10,7 @@
     <string name="year_format">%.4s</string>
     <string name="release_in">Released in %.4s</string>
     <string name="rating_format">%.3s / 10</string>
+    <string name="rating_format_short">%.1f</string>
     <string name="rating_count_format">( %s )</string>
     <string name="hint_rating">rating</string>
     <string name="hint_year">year</string>
@@ -21,11 +22,10 @@
     <string name="nav_home">Home</string>
     <string name="nav_search">Search</string>
     <string name="nav_favorites">Favorites</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="not_yet_implemented">Not yet implemented</string>
-    <string name="results_could_not_be_loaded">Results could not be loaded</string>
+    <string name="results_could_not_be_loaded">We couldn\'t load the movies\nPlease check your internet connection</string>
     <string name="retryText">Retry</string>
     <string name="no_results_found_for_this_query">No results found for this query</string>
     <string name="title">Title</string>
+    <string name="hold_tight">Hold tight</string>
 </resources>

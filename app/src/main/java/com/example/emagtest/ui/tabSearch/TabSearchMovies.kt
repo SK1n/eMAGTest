@@ -4,23 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import com.example.emagtest.R
 import com.example.emagtest.adapters.MoviesAdapter
-import com.example.emagtest.adapters.MoviesLoadStateAdapter
 import com.example.emagtest.databinding.FragmentTabSearchBinding
 import com.example.emagtest.ui.customViews.MarginDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchMovies : Fragment() {
+class TabSearchMovies : Fragment() {
 
-    private val viewModel: SearchMoviesViewModel by viewModels()
+    private val viewModel: TabSearchMoviesViewModel by viewModels()
     private var _binding: FragmentTabSearchBinding? = null
     private val binding get() = _binding!!
     private lateinit var navController: NavController
@@ -37,11 +40,12 @@ class SearchMovies : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupAdapter()
+        showLoadingError()
+        retryClickListener()
         binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.getSearchResults(query!!)
-
                 return false
             }
 
@@ -49,17 +53,17 @@ class SearchMovies : Fragment() {
                 return false
             }
         })
+    }
+
+    private fun setupAdapter() {
         binding.movieRecycler.apply {
             setHasFixedSize(true)
             addItemDecoration(MarginDecoration(context))
-            adapter = pagerAdapter.withLoadStateHeaderAndFooter(
-                header = MoviesLoadStateAdapter { pagerAdapter.retry() },
-                footer = MoviesLoadStateAdapter { pagerAdapter.retry() },
-            )
+            adapter = pagerAdapter
         }
         pagerAdapter.onItemClick = {
             val directions =
-                SearchMoviesDirections.actionSearchMoviesToNavigationMovieDetails(it.id!!)
+                TabSearchMoviesDirections.actionSearchMoviesToNavigationMovieDetails(it.id!!)
             findNavController().navigate(directions)
         }
         viewModel.movies.observe(viewLifecycleOwner) {
@@ -67,5 +71,31 @@ class SearchMovies : Fragment() {
                 pagerAdapter.submitData(it)
             }
         }
+    }
+
+    private fun showLoadingError() = lifecycleScope.launch {
+        pagerAdapter.loadStateFlow.collectLatest {
+            if (it.refresh is LoadState.Loading) {
+                binding.itemLoading.root.visibility = View.VISIBLE
+            } else {
+                binding.itemLoading.root.visibility = View.GONE
+            }
+            if (it.refresh is LoadState.Error) {
+                binding.itemError.root.visibility = View.VISIBLE
+            } else {
+                binding.itemError.root.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun retryClickListener() {
+        binding.itemError.root.findViewById<Button>(R.id.button_retry).setOnClickListener {
+            pagerAdapter.retry()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

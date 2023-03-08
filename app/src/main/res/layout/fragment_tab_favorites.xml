@@ -28,7 +28,18 @@
 
         <include
             android:id="@+id/item_no_data"
-            layout="@layout/item_no_data" />
+            layout="@layout/item_no_data"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/item_loading"
+            layout="@layout/item_loading"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/item_error"
+            layout="@layout/item_error"
+            android:visibility="gone" />
     </RelativeLayout>
 
 

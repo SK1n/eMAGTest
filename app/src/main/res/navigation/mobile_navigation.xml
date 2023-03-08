@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_tab_search_movies"
-        android:name="com.example.emagtest.ui.tabSearch.SearchMovies"
+        android:name="com.example.emagtest.ui.tabSearch.TabSearchMovies"
         android:label="Search"
         tools:layout="@layout/fragment_tab_search" >
         <action
