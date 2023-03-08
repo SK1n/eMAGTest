@@ -20,6 +20,7 @@
             android:id="@id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:queryHint="@string/search"
             android:iconifiedByDefault="false" />
 
         <androidx.recyclerview.widget.RecyclerView

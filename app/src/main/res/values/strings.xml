@@ -28,4 +28,5 @@
     <string name="no_results_found_for_this_query">No results found for this query</string>
     <string name="title">Title</string>
     <string name="hold_tight">Hold tight</string>
+    <string name="search">Search...</string>
 </resources>
