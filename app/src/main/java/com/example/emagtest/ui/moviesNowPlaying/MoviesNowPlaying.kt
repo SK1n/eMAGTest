@@ -1,30 +1,24 @@
 package com.example.emagtest.ui.moviesNowPlaying
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.example.emagtest.R
 import com.example.emagtest.adapters.MoviesAdapter
-import com.example.emagtest.adapters.MoviesLoadStateAdapter
 import com.example.emagtest.databinding.FragmentMoviesNowPlayingBinding
-import com.example.emagtest.di.LocalRepositoryEntryPoint
-import com.example.emagtest.room.LocalRepository
 import com.example.emagtest.ui.customViews.MarginDecoration
 import com.example.emagtest.ui.tabHome.TabHomeDirections
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.EntryPointAccessors
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -48,6 +42,8 @@ class MoviesNowPlaying: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
+        showLoadingError()
+        retryClickListener()
     }
 
     private fun setupAdapter() {
@@ -64,6 +60,26 @@ class MoviesNowPlaying: Fragment() {
             lifecycleScope.launch {
                 pagerAdapter.submitData(it)
             }
+        }
+    }
+    private fun showLoadingError() = lifecycleScope.launch {
+        pagerAdapter.loadStateFlow.collectLatest {
+            if (it.refresh is LoadState.Loading) {
+                binding.itemLoading.root.visibility = View.VISIBLE
+            } else {
+                binding.itemLoading.root.visibility = View.GONE
+            }
+            if(it.refresh is LoadState.Error) {
+                binding.itemError.root.visibility = View.VISIBLE
+            } else {
+                binding.itemError.root.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun retryClickListener() {
+        binding.itemError.root.findViewById<Button>(R.id.button_retry).setOnClickListener {
+            pagerAdapter.retry()
         }
     }
     override fun onDestroyView() {

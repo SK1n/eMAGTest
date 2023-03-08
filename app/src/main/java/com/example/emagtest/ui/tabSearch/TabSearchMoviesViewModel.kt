@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchMoviesViewModel @Inject constructor(
+class TabSearchMoviesViewModel @Inject constructor(
     private val repository: SearchMoviesRepository
 ) : ViewModel() {
     val movies: MutableLiveData<PagingData<MoviesModel>> = MutableLiveData()
